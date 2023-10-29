@@ -48,6 +48,7 @@ class FanEntityFeature(IntFlag):
     OSCILLATE = 2
     DIRECTION = 4
     PRESET_MODE = 8
+    MIST = 16
 
 
 # These SUPPORT_* constants are deprecated as of Home Assistant 2022.5.
@@ -56,6 +57,7 @@ SUPPORT_SET_SPEED = 1
 SUPPORT_OSCILLATE = 2
 SUPPORT_DIRECTION = 4
 SUPPORT_PRESET_MODE = 8
+SUPPORT_MIST = 16
 
 SERVICE_INCREASE_SPEED = "increase_speed"
 SERVICE_DECREASE_SPEED = "decrease_speed"
@@ -63,6 +65,7 @@ SERVICE_OSCILLATE = "oscillate"
 SERVICE_SET_DIRECTION = "set_direction"
 SERVICE_SET_PERCENTAGE = "set_percentage"
 SERVICE_SET_PRESET_MODE = "set_preset_mode"
+SERVICE_SET_MIST_MODE = "set_mist_mode"
 
 DIRECTION_FORWARD = "forward"
 DIRECTION_REVERSE = "reverse"
@@ -73,6 +76,8 @@ ATTR_OSCILLATING = "oscillating"
 ATTR_DIRECTION = "direction"
 ATTR_PRESET_MODE = "preset_mode"
 ATTR_PRESET_MODES = "preset_modes"
+ATTR_MIST_MODE = "mist_mode"
+ATTR_MIST_MODES = "mist_modes"
 
 # mypy: disallow-any-generics
 
@@ -159,7 +164,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         "async_set_preset_mode",
         [FanEntityFeature.SET_SPEED, FanEntityFeature.PRESET_MODE],
     )
-
+    component.async_register_entity_service(
+        SERVICE_SET_MIST_MODE,
+        {vol.Required(ATTR_MIST_MODE): cv.string},
+        "async_set_mist_mode",
+        [FanEntityFeature.MIST_MODE],
+    )
     return True
 
 
@@ -192,6 +202,8 @@ class FanEntity(ToggleEntity):
     _attr_preset_mode: str | None
     _attr_preset_modes: list[str] | None
     _attr_speed_count: int
+    _attr_mist_mode: str
+    _attr_mist_modes: list[str] | None
     _attr_supported_features: FanEntityFeature = FanEntityFeature(0)
 
     def set_percentage(self, percentage: int) -> None:
@@ -248,6 +260,23 @@ class FanEntity(ToggleEntity):
             raise NotValidPresetModeError(
                 f"The preset_mode {preset_mode} is not a valid preset_mode:"
                 f" {preset_modes}"
+            )
+
+    def set_mist_mode(self, mist_mode: str) -> None:
+        """Set new mist mode."""
+        raise NotImplementedError()
+
+    async def async_set_mist_mode(self, mist_mode: str) -> None:
+        """Set new mist mode."""
+        await self.hass.async_add_executor_job(self.set_mist_mode, mist_mode)
+
+    def _valid_mist_mode_or_raise(self, mist_mode: str) -> None:
+        """Raise NotValidMistModeError on invalid preset_mode."""
+        mist_modes = self.mist_modes
+        if not mist_modes or mist_mode not in mist_modes:
+            raise NotValidMistModeError(
+                f"The mist_mode {mist_mode} is not a mist_mode:"
+                f" {mist_modes}"
             )
 
     def set_direction(self, direction: str) -> None:
@@ -338,6 +367,12 @@ class FanEntity(ToggleEntity):
         ):
             attrs[ATTR_PRESET_MODES] = self.preset_modes
 
+        if (
+            self.supported_features & FanEntityFeature.MIST_MODE
+        ):
+            attrs[ATTR_MIST_MODES] = self.mist_modes
+
+
         return attrs
 
     @final
@@ -362,6 +397,11 @@ class FanEntity(ToggleEntity):
             or supported_features & FanEntityFeature.SET_SPEED
         ):
             data[ATTR_PRESET_MODE] = self.preset_mode
+
+        if (
+            supported_features & FanEntityFeature.MIST_MODE
+        ):
+            data[ATTR_MIST_MODE] = self.preset_mode
 
         return data
 
@@ -388,4 +428,25 @@ class FanEntity(ToggleEntity):
         """
         if hasattr(self, "_attr_preset_modes"):
             return self._attr_preset_modes
+        return None
+
+    @property
+    def mist_mode(self) -> str | None:
+        """Return the current mist mode.
+
+        Requires FanEntityFeature.MIST.
+        """
+        if hasattr(self, "_attr_mist_mode"):
+            return self._attr_mist_mode
+        return None
+
+
+    @property
+    def mist_modes(self) -> list[str] | None:
+        """Return a list of available mist modes.
+
+        Requires FanEntityFeature.MIST.
+        """
+        if hasattr(self, "_attr_mist_modes"):
+            return self._attr_mist_modes
         return None
