@@ -292,6 +292,13 @@ NUMBERS: dict[str, tuple[NumberEntityDescription, ...]] = {
             device_class=NumberDeviceClass.TEMPERATURE,
             icon="mdi:thermometer-lines",
         ),
+#        NumberEntityDescription(
+#            key=DPCode.MIST,
+#            name="Mist",
+##            entity_category=EntityCategory.CONFIG,
+#            icon="mdi:weather-fog",
+#            translation_key="mist",
+#        ),
     ),
     # Humidifier
     # https://developer.tuya.com/en/docs/iot/categoryjsq?id=Kaiuz1smr440b
