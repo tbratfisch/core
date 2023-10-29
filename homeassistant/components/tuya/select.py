@@ -242,6 +242,13 @@ SELECTS: dict[str, tuple[SelectEntityDescription, ...]] = {
             icon="mdi:timer-cog-outline",
             translation_key="countdown",
         ),
+        SelectEntityDescription(
+            key=DPCode.MIST,
+            name="Mist",
+            entity_category=EntityCategory.CONFIG,
+            icon="mdi:weather-fog",
+            translation_key="mist",
+        ),
     ),
     # Curtain
     # https://developer.tuya.com/en/docs/iot/f?id=K9gf46o5mtfyc
@@ -322,6 +329,40 @@ SELECTS: dict[str, tuple[SelectEntityDescription, ...]] = {
             translation_key="target_humidity",
             entity_category=EntityCategory.CONFIG,
             icon="mdi:water-percent",
+        ),
+    ),
+    # Weather Station
+    # No specification on Tuya portal        
+    "qxj": (
+        SelectEntityDescription(
+            key=DPCode.BRIGHT_UNIT_CONVERT,
+            name="Bright Unit Convert",
+            translation_key="bright_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.PRESSURE_UNIT_CONVERT,
+            name="Pressure Unit Convert",
+            translation_key="pressure_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.RAIN_UNIT_CONVERT,
+            name="Rain Unit Convert",
+            translation_key="rain_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.TEMP_UNIT_CONVERT,
+            name="Temperature Unit Convert",
+            translation_key="temp_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.WINDSPEED_UNIT_CONVERT,
+            name="Windspeed Unit Convert",
+            translation_key="windspeed_unit_convert",
+            entity_category=EntityCategory.CONFIG,
         ),
     ),
 }
