@@ -14,6 +14,10 @@ from . import HomeAssistantTuyaData
 from .base import TuyaEntity
 from .const import DOMAIN, TUYA_DISCOVERY_NEW, DPCode
 
+import logging
+_LOGGER = logging.getLogger(__name__)
+
+
 # All descriptions can be found here.
 # https://developer.tuya.com/en/docs/iot/standarddescription?id=K9i5ql6waswzq
 BUTTONS: dict[str, tuple[ButtonEntityDescription, ...]] = {
@@ -73,6 +77,7 @@ async def async_setup_entry(
     def async_discover_device(device_ids: list[str]) -> None:
         """Discover and add a discovered Tuya buttons."""
         entities: list[TuyaButtonEntity] = []
+        ir_remote_buttons: list[TuyaButtonEntity] = []
         for device_id in device_ids:
             device = hass_data.device_manager.device_map[device_id]
             if descriptions := BUTTONS.get(device.category):
@@ -83,8 +88,21 @@ async def async_setup_entry(
                                 device, hass_data.device_manager, description
                             )
                         )
+            _LOGGER.debug('BBBBBB async_discover_device(): ' + " ".join(device_ids))
+
+
+            if device and (device.category == "qt" or device.category.startswith("infrared_")):
+                #entities.append(TuyaRemoteEntity(device, hass_data.device_manager))
+                _LOGGER.debug('BBBBBB: entities.append: device_id: ' + device_id)
+                for function in device.function.values():
+                    value = function.values
+                    function = function.type
+                    if function == "STRING":
+                        _LOGGER.debug('TTTTTTT: ' + function + ' ' + value + ' ' + type(value).__name__)
+                        # ir_remote_buttons.append(TuyaButtonEntity(value, hass_data.device_manager, value))
 
         async_add_entities(entities)
+        async_add_entities(ir_remote_buttons)
 
     async_discover_device([*hass_data.device_manager.device_map])
 
