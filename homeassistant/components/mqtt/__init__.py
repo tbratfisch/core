@@ -47,6 +47,7 @@ from .client import (  # noqa: F401
     publish,
     subscribe,
 )
+from .config import MQTT_BASE_SCHEMA, MQTT_RO_SCHEMA, MQTT_RW_SCHEMA  # noqa: F401
 from .config_integration import CONFIG_SCHEMA_BASE
 from .const import (  # noqa: F401
     ATTR_PAYLOAD,
@@ -432,15 +433,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             ]
             await asyncio.gather(*tasks)
 
-            await asyncio.gather(
-                *(
-                    [
-                        mqtt_data.reload_handlers[component]()
-                        for component in RELOADABLE_PLATFORMS
-                        if component in mqtt_data.reload_handlers
-                    ]
-                )
-            )
+            for _, component in mqtt_data.reload_handlers.items():
+                component()
 
             # Fire event
             hass.bus.async_fire(f"event_{DOMAIN}_reloaded", context=call.context)
