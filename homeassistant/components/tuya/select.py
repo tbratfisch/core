@@ -324,6 +324,40 @@ SELECTS: dict[str, tuple[SelectEntityDescription, ...]] = {
             icon="mdi:water-percent",
         ),
     ),
+    # Weather Station
+    # No specification on Tuya portal
+    "qxj": (
+        SelectEntityDescription(
+            key=DPCode.BRIGHT_UNIT_CONVERT,
+            name="Bright Unit Convert",
+            translation_key="bright_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.PRESSURE_UNIT_CONVERT,
+            name="Pressure Unit Convert",
+            translation_key="pressure_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.RAIN_UNIT_CONVERT,
+            name="Rain Unit Convert",
+            translation_key="rain_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.TEMP_UNIT_CONVERT,
+            name="Temperature Unit Convert",
+            translation_key="temp_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+        SelectEntityDescription(
+            key=DPCode.WINDSPEED_UNIT_CONVERT,
+            name="Windspeed Unit Convert",
+            translation_key="windspeed_unit_convert",
+            entity_category=EntityCategory.CONFIG,
+        ),
+    ),
 }
 
 # Socket (duplicate of `kg`)

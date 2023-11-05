@@ -424,6 +424,9 @@
       }
     },
     "sensor": {
+      "atmospheric_pressure": {
+        "name": "Atmospheric Pressure"
+      },
       "battery": {
         "name": "[%key:component::sensor::entity_component::battery::name%]"
       },
@@ -436,14 +439,38 @@
       "carbon_dioxide": {
         "name": "[%key:component::sensor::entity_component::carbon_dioxide::name%]"
       },
+      "dew_temperature_point": {
+        "name": "Dew Temperature Point"
+      },
+      "feellike_temperature": {
+        "name": "Feellike Temperature"
+      },
       "illuminance": {
         "name": "[%key:component::sensor::entity_component::illuminance::name%]"
       },
       "temperature": {
         "name": "[%key:component::sensor::entity_component::temperature::name%]"
       },
+      "temperature_indoor": {
+        "name": "Temperature Indoor"
+      },
+      "temperature_outdoor": {
+        "name": "Temperature Outdoor"
+      },
+      "wind_chill_index": {
+        "name": "Temperature Chill Index"
+      },
+      "heat_index": {
+        "name": "Temperature Heat Index"
+      },
       "humidity": {
         "name": "[%key:component::sensor::entity_component::humidity::name%]"
+      },
+      "humidity_indoor": {
+        "name": "Humidity Indoor"
+      },
+      "humidity_outdoor": {
+        "name": "Humidity Outdoor"
       },
       "pm25": {
         "name": "[%key:component::sensor::entity_component::pm25::name%]"
@@ -465,6 +492,9 @@
       },
       "battery_state": {
         "name": "Battery state"
+      },
+      "battery_state_1": {
+        "name": "Battery state 1"
       },
       "gas": {
         "name": "Gas"
@@ -570,6 +600,33 @@
       },
       "total_absorption_particles": {
         "name": "Total absorption of particles"
+      },
+      "wind_speed_average": {
+        "name": "Windspeed Average"
+      },
+      "wind_speed_gust": {
+        "name": "Windspeed Gust"
+      },
+      "wind_direction": {
+        "name": "Wind Direction",
+          "state": {
+            "north": "North",
+            "north_north_east": "North North East",
+            "north_east": "North East",
+            "east_north_east": "East North East",
+            "east": "East",
+            "east_south_east": "East South East",
+            "south_east": "South East",
+            "south_south_east": "South South East",
+            "south": "South",
+            "south_south_west": "South South West",
+            "south_west": "South West",
+            "west_south_west": "West South West",
+            "west": "West",
+            "west_north_west": "West North West",
+            "north_west": "North West",
+            "north_north_west": "North North West"
+        }
       },
       "sous_vide_status": {
         "name": "Status",
